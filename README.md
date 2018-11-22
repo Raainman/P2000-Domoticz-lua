@@ -2,7 +2,9 @@
 Retrieve P2000 messages (the Netherlands only) to be shown in a text sensor, and telegram message
 
 Create 2 dummy text devices in Domoticz;
+
 P2000
+
 MaxP2000
 
 Then also fill in the telegram settings
