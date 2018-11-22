@@ -82,7 +82,9 @@ return {
 
 	sensor = domoticz.devices('P2000')
 	sensorMaxID = domoticz.devices('MaxP2000')
---	sensorMaxID.updateText('13510769') -- For testing
+	if( sensorMaxID.text == "Hello World" ) then
+		sensorMaxID.updateText('1')
+	end
 
 	--parameters to be set (or not, if you leave empty the results will not be filtered )
 	local capcode = '' 
