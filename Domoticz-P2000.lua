@@ -45,7 +45,7 @@ function ProcessResponse(domoticz,triggerItem,sensor)
 				sc = #curitem.subitems -- subitem count
 				j=1
 				repeat
-					id,subcomposedgoogle = ProcessItem(curitem.subitems[j])
+					id,subcomposed,google = ProcessItem(curitem.subitems[j])
 
 					maxid = math.max(tonumber(maxid),tonumber(id))
 					composed = tostring(composed..' '..subcomposed) -- Combine subitems into one
