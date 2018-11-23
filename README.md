@@ -15,4 +15,7 @@ The lua file should be placed in the dzEvents/scripts directory on your Domoticz
 
 monitor your log file for any problems, the P2000 sensor should be filled with the latest P2000 message based on your filter settings.
 
-The MaxP2000 sensor will contain the highest message id retrieved, so that only the newest messages will be retrieved.
+The MaxP2000 sensor will contain the highest message id retrieved, so that only the newest messages will be retrieved
+
+Todo: Change MaxID to persistent data
+Once lua 2.4.8 is in the stable Domoticz, I will change that the Telegram will be sent via notification system (not possible in the current lua 2.4.6)
