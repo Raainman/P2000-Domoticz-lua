@@ -22,14 +22,14 @@ function ProcessItem(item)
 	if( lon ~= nil and lon ~= '0.00000' ) then
 		google = ('https://www.google.com/maps/search/?api=1&query='..lat..','..lon)
 	end
-
+	composed = ('['..datum..'] '..melding..' '..icon)
 	return id,composed,google
 end
 
-function ProcessResponse(domoticz,triggerItem,sensor,sensorMaxID)
+function ProcessResponse(domoticz,triggerItem,sensor)
 	
 	local updatesensor = false
-	local maxid = tostring(sensorMaxID.text)
+	local maxid = tostring(domoticz.data.maxid)
 	local composed=''
 	
 	if (triggerItem.ok) then
@@ -66,7 +66,7 @@ function ProcessResponse(domoticz,triggerItem,sensor,sensorMaxID)
 		end
 		if ( updatesensor ) then
 			sensor.updateText(composed)
-			sensorMaxID.updateText(maxid)
+			domoticz.data.maxid = maxid
 		end
 	else
 		print('Item not ok')
@@ -78,13 +78,12 @@ return {
 			timer = { 'every 5 minutes' }, 
 			httpResponses = { 'AlarmeringdroidhttpResponse' } -- matches callback string below
 		},
+	        data = {
+           		maxid = { initial = 1 }
+       		},
 		execute = function(domoticz, triggerItem)
 
 	sensor = domoticz.devices('P2000')
-	sensorMaxID = domoticz.devices('MaxP2000')
-	if( sensorMaxID.text == "Hello World" ) then
-		sensorMaxID.updateText('1')
-	end
 
 	--parameters to be set (or not, if you leave empty the results will not be filtered )
 	local capcode = '' 
@@ -101,7 +100,7 @@ return {
 	local plaats = 'Utrecht'
 
 	if (triggerItem.isTimer) then
-		url = 'https://www.alarmeringdroid.nl/api/livemon?dienst='..dienst..'&regio='..regio..'&capcode='..capcode..'&plaats='..plaats..'&prio1='..priority..'&id='..sensorMaxID.text 
+		url = 'https://www.alarmeringdroid.nl/api/livemon?dienst='..dienst..'&regio='..regio..'&capcode='..capcode..'&plaats='..plaats..'&prio1='..priority..'&id='..domoticz.data.maxid 
 		domoticz.openURL({
 			url = url,
 			method = 'GET',
@@ -111,7 +110,7 @@ return {
 	end
 	if (triggerItem.isHTTPResponse) then
 		print('Valid Response')
-		ProcessResponse(domoticz,triggerItem,sensor,sensorMaxID)
+		ProcessResponse(domoticz,triggerItem,sensor)
 	end
 end
 }
