@@ -15,6 +15,10 @@ function ProcessItem(item)
 	melding = tostring(item.msg)
 	icon = tostring(item.icon)
 	datum = tostring(item.date)
+	-- TODO: debug this
+	now=os.date('--%x--')
+	-- datum = datum:gsub('Vandaag',now.text)
+	-- datum = datum:gsub('Gisteren',now.text)
 
 	local lat = tostring(item.lat)
 	local lon = tostring(item.lon)
@@ -79,7 +83,7 @@ return {
 			httpResponses = { 'AlarmeringdroidhttpResponse' } -- matches callback string below
 		},
 	        data = {
-           		maxid = { initial = 1 }
+           		maxid = { initial = 13548517 }
        		},
 		execute = function(domoticz, triggerItem)
 
@@ -95,6 +99,7 @@ return {
 	-- 3=Noord- en Oost Gelderland 24=Noord-Holland Noord 10=Rotterdam-Rijnmond 23=Twente 18=Utrecht 
 	-- 4=Zaanstreek-Waterland 20=Zeeland 14=Zuid-Holland Zuid
 	local priority='true'
+	-- true means only priority messages (eg. A1)
 	local dienst = ''
 	-- 1= Politie 2 = Brandweer 3 = Ambulance 4 = KNRM 5 = Lifeliner 7 = Dares  
 	local plaats = 'Utrecht'
