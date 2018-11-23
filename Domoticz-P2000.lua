@@ -12,7 +12,7 @@ function ProcessItem(item)
 	id = tostring(item.id)
 	prio1 = tostring(item.prio1)
 	dienst = tostring(item.dienst)
-	melding = tostring(item.msg) --items[0].msg
+	melding = tostring(item.msg)
 	icon = tostring(item.icon)
 	datum = tostring(item.date)
 
