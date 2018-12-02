@@ -1,9 +1,11 @@
-function Telegram(message)
-	local bot = '999999999'; -- Telegram Bot ID
-	local token = '<Telegrambot Token here>'; -- Telegram Bot Token
-	local chatId = '99999999'; -- Telegram Chat ID
+function Telegram(domoticz,message)
+        domoticz.notify("P2000",message,domoticz.PRIORITY_HIGH, domoticz.SOUND_DEFAULT, "" , "telegram")
 	
-	os.execute('curl --data chat_id='..chatId..' --data-urlencode "text='..message..'"  "https://api.telegram.org/bot'..bot..':'..token..'/sendMessage" ')
+--	local bot = '999999999'; -- Telegram Bot ID
+--	local token = '<Telegrambot Token here>'; -- Telegram Bot Token
+--	local chatId = '99999999'; -- Telegram Chat ID
+	
+--	os.execute('curl --data chat_id='..chatId..' --data-urlencode "text='..message..'"  "https://api.telegram.org/bot'..bot..':'..token..'/sendMessage" ')
 	return
 end
 
@@ -15,10 +17,11 @@ function ProcessItem(item)
 	melding = tostring(item.msg)
 	icon = tostring(item.icon)
 	datum = tostring(item.date)
-	-- TODO: debug this
-	now=os.date('--%x--')
-	-- datum = datum:gsub('Vandaag',now.text)
-	-- datum = datum:gsub('Gisteren',now.text)
+
+	now=os.date('%d-%m-%Y')
+        yesterday=os.date("%d-%m-%Y",os.time()-(24*60*60))
+        datum = datum:gsub('Vandaag',tostring(now))
+        datum = datum:gsub('Gisteren',tostring(yesterday))
 
 	local lat = tostring(item.lat)
 	local lon = tostring(item.lon)
@@ -54,7 +57,7 @@ function ProcessResponse(domoticz,triggerItem,sensor)
 					maxid = math.max(tonumber(maxid),tonumber(id))
 					composed = tostring(composed..' '..subcomposed) -- Combine subitems into one
  					updatesensor=true
-					Telegram('P2000 '..subcomposed..' '..google) -- Send every subitem separate to Telegram
+					Telegram(domoticz,'P2000 '..subcomposed..' '..google) -- Send every subitem separate to Telegram
 
 					j = j + 1
 				until j > sc
@@ -63,7 +66,7 @@ function ProcessResponse(domoticz,triggerItem,sensor)
 
 				maxid = math.max(tonumber(maxid),tonumber(id))
 				updatesensor=true
-				Telegram('P2000 '..composed..' '..google)
+				Telegram(domoticz,'P2000 '..composed..' '..google)
 			end
 
 			i = i - 1
